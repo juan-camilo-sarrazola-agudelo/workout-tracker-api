@@ -4,28 +4,32 @@ let users = [
     name: "juan camilo sarrazola",
     email: "jcsarrazola@example.com",
     role: "admin",
-    createdAt: "2025-09-12T12:00:00Z"
+    createdAt: "2025-09-12T12:00:00Z",
+    passwordHash: "hashed_password_1",
   },
     {
     id:"2",
     name: "vanesa",
     email: "vanesa@example.com",
     role: "estuden",
-    createdAt: "2025-09-12T12:00:00Z"
+    createdAt: "2025-09-12T12:00:00Z",
+    passwordHash: "hashed_password_2",
   },
     {
     id:"3",
     name: "jeferson estiven",
     email: "jeferson@example.com",
     role: "admin",
-    createdAt: "2025-09-12T12:00:00Z"
+    createdAt: "2025-09-12T12:00:00Z",
+    passwordHash: "hashed_password_3",
   },
     {
     id:"4",
     name: "carlos",
     email: "carlos@example.com",
     role: "gerente",
-    createdAt: "2025-09-12T12:00:00Z"
+    createdAt: "2025-09-12T12:00:00Z",
+    passwordHash: "hashed_password_4",
   },
 
 ];
