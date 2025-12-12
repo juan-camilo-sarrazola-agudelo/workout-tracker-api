@@ -1,99 +1,213 @@
+// const express = require('express');
+// const router = express.Router();
+
+
+//  //GET /api/v1/users
+//   router.get('/', (req, res) => {
+//     res.status(200).json(users);
+//   });
+
+
+// // GET /users/:id
+// router.get('/:id', (req, res) => {
+//   const { id } = req.params;   // 1
+//   const user = users.find(u => u.id === id);   // 2
+
+//   if (!user) {   // 3
+//     return res.status(404).json({ error: 'Usuario no encontrado' });
+//   }
+
+//   res.status(200).json(user);   // 4
+// });
+
+// // POST /users
+// router.post('/', (req, res) => {
+//   const { name, email, role } = req.body;   // 1
+
+//   if (!name || !email) {   // 2
+//     return res.status(400).json({ error: 'Name y email son requeridos' });
+//   }
+
+//   const newUser = {   // 3
+//     id: `${Date.now()}`,  // identificador temporal
+//     name,
+//     email,
+//     role: role || 'user',  // valor por defecto si no envían rol
+//     createdAt: new Date().toISOString()
+//   };
+
+//   users.push(newUser);   // 4
+
+//   res.status(201).json(newUser);   // 5
+// });
+
+// // PUT /users/:id
+// router.put('/:id', (req, res) => {
+//   const { id } = req.params;              // 1
+//   const { name, email, role } = req.body; // 2
+
+//   const index = users.findIndex(u => u.id === id); // 3
+//   if (index === -1) {                     // 4
+//     return res.status(404).json({ error: 'Usuario no encontrado' });
+//   }
+
+//   if (!name || !email) {                  // 5
+//     return res.status(400).json({ error: 'Name y email son requeridos' });
+//   }
+
+//   users[index] = {                        // 6
+//     ...users[index], // conserva los datos previos
+//     name,
+//     email,
+//     role
+//   };
+
+//   res.status(200).json(users[index]);     // 7
+// });
+
+// // DELETE /users/:id
+// router.delete('/:id', (req, res) => {
+//   const { id } = req.params;                            // 1
+//   const index = users.findIndex(u => u.id === id);      // 2
+
+//   if (index === -1) {                                   // 3
+//     return res.status(404).json({ error: 'Usuario no encontrado' });
+//   }
+
+//   const deletedUser = users.splice(index, 1);           // 4
+//   res.status(200).json({ deleted: deletedUser[0].id }); // 5
+// });
+
+// // GET /users?role=user&search=Camilo
+// router.get('/', (req, res) => {
+//   const { role, search } = req.query;  // 1
+//   let result = users;                  // 2
+
+//   if (role) {                          // 3
+//     result = result.filter(u => u.role === role);
+//   }
+
+//   if (search) {                        // 4
+//     result = result.filter(u =>
+//       u.name.toLowerCase().includes(search.toLowerCase())
+//     );
+//   }
+
+//   res.status(200).json(result);        // 5
+// });
+
+//   module.exports = router;
+
 const express = require('express');
 const router = express.Router();
 
+let users = []; // IMPORTANTE: debes definir tu arreglo de usuarios
 
- //GET /api/v1/users
-  router.get('/', (req, res) => {
-    res.status(200).json(users);
-  });
-
-
-// GET /users/:id
-router.get('/:id', (req, res) => {
-  const { id } = req.params;   // 1
-  const user = users.find(u => u.id === id);   // 2
-
-  if (!user) {   // 3
-    return res.status(404).json({ error: 'Usuario no encontrado' });
-  }
-
-  res.status(200).json(user);   // 4
-});
-
-// POST /users
-router.post('/', (req, res) => {
-  const { name, email, role } = req.body;   // 1
-
-  if (!name || !email) {   // 2
-    return res.status(400).json({ error: 'Name y email son requeridos' });
-  }
-
-  const newUser = {   // 3
-    id: `${Date.now()}`,  // identificador temporal
-    name,
-    email,
-    role: role || 'user',  // valor por defecto si no envían rol
-    createdAt: new Date().toISOString()
-  };
-
-  users.push(newUser);   // 4
-
-  res.status(201).json(newUser);   // 5
-});
-
-// PUT /users/:id
-router.put('/:id', (req, res) => {
-  const { id } = req.params;              // 1
-  const { name, email, role } = req.body; // 2
-
-  const index = users.findIndex(u => u.id === id); // 3
-  if (index === -1) {                     // 4
-    return res.status(404).json({ error: 'Usuario no encontrado' });
-  }
-
-  if (!name || !email) {                  // 5
-    return res.status(400).json({ error: 'Name y email son requeridos' });
-  }
-
-  users[index] = {                        // 6
-    ...users[index], // conserva los datos previos
-    name,
-    email,
-    role
-  };
-
-  res.status(200).json(users[index]);     // 7
-});
-
-// DELETE /users/:id
-router.delete('/:id', (req, res) => {
-  const { id } = req.params;                            // 1
-  const index = users.findIndex(u => u.id === id);      // 2
-
-  if (index === -1) {                                   // 3
-    return res.status(404).json({ error: 'Usuario no encontrado' });
-  }
-
-  const deletedUser = users.splice(index, 1);           // 4
-  res.status(200).json({ deleted: deletedUser[0].id }); // 5
-});
-
-// GET /users?role=user&search=Carlos
+// =====================================================
+// GET /api/v1/users  → lista usuarios + filtros
+// Ej: /users?role=admin&search=Carlos
+// =====================================================
 router.get('/', (req, res) => {
-  const { role, search } = req.query;  // 1
-  let result = users;                  // 2
+  const { role, search } = req.query;
 
-  if (role) {                          // 3
+  let result = users;
+
+  if (role) {
     result = result.filter(u => u.role === role);
   }
 
-  if (search) {                        // 4
+  if (search) {
     result = result.filter(u =>
       u.name.toLowerCase().includes(search.toLowerCase())
     );
   }
 
-  res.status(200).json(result);        // 5
+  res.status(200).json(result);
 });
 
-  module.exports = router;
+
+// =====================================================
+// GET /api/v1/users/:id → obtener usuario por ID
+// =====================================================
+router.get('/:id', (req, res) => {
+  const { id } = req.params;
+  const user = users.find(u => u.id === id);
+
+  if (!user) {
+    return res.status(404).json({ error: 'Usuario no encontrado' });
+  }
+
+  res.status(200).json(user);
+});
+
+
+// =====================================================
+// POST /api/v1/users → crear usuario
+// =====================================================
+router.post('/', (req, res) => {
+  const { name, email, role } = req.body;
+
+  if (!name || !email) {
+    return res.status(400).json({ error: 'Name y email son requeridos' });
+  }
+
+  const newUser = {
+    id: `${Date.now()}`,
+    name,
+    email,
+    role: role || 'user',
+    createdAt: new Date().toISOString()
+  };
+
+  users.push(newUser);
+
+  res.status(201).json(newUser);
+});
+
+
+// =====================================================
+// PUT /api/v1/users/:id → actualizar usuario
+// =====================================================
+router.put('/:id', (req, res) => {
+  const { id } = req.params;
+  const { name, email, role } = req.body;
+
+  const index = users.findIndex(u => u.id === id);
+
+  if (index === -1) {
+    return res.status(404).json({ error: 'Usuario no encontrado' });
+  }
+
+  if (!name || !email) {
+    return res.status(400).json({ error: 'Name y email son requeridos' });
+  }
+
+  users[index] = {
+    ...users[index],
+    name,
+    email,
+    role
+  };
+
+  res.status(200).json(users[index]);
+});
+
+
+// =====================================================
+// DELETE /api/v1/users/:id → eliminar usuario
+// =====================================================
+router.delete('/:id', (req, res) => {
+  const { id } = req.params;
+
+  const index = users.findIndex(u => u.id === id);
+
+  if (index === -1) {
+    return res.status(404).json({ error: 'Usuario no encontrado' });
+  }
+
+  const deletedUser = users.splice(index, 1);
+
+  res.status(200).json({ deleted: deletedUser[0].id });
+});
+
+module.exports = router;
