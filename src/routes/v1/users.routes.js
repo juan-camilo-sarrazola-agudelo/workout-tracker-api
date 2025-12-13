@@ -193,9 +193,9 @@ router.put('/:id', (req, res) => {
 });
 
 
-// =====================================================
+// 
 // DELETE /api/v1/users/:id → eliminar usuario
-// =====================================================
+
 router.delete('/:id', (req, res) => {
   const { id } = req.params;
 
